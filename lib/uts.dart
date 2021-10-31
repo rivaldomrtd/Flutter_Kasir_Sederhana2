@@ -1,4 +1,5 @@
 import 'dart:ffi';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -29,6 +30,9 @@ class _HomeState extends State<Home> {
   TextEditingController disco = TextEditingController();
   TextEditingController jumlaht = TextEditingController();
   TextEditingController kembaliant = TextEditingController();
+  TextEditingController ppnt = TextEditingController();
+  TextEditingController grantott = TextEditingController();
+  TextEditingController libur = TextEditingController();
   DateTime selectedDate = DateTime.now();
   final firstDate = DateTime(2000, 1);
   final lastDate = DateTime(2021, 12);
@@ -52,6 +56,10 @@ class _HomeState extends State<Home> {
   final TextEditingController diskon = TextEditingController(
     text: '',
   );
+  final TextEditingController dibayar = TextEditingController(
+    text: '',
+  );
+
   String disko = "";
   String har = "";
   String saud = "";
@@ -59,14 +67,9 @@ class _HomeState extends State<Home> {
   String pajak = "";
   String? _chosenValue = "Biasa";
   String? valueChoose;
-  int a = 0, c = 0, z = 0, x = 0, v = 0;
+  int a = 0, z = 0, x = 0, v = 0;
   double b = 0, d = 0, e = 0;
-  void proses() {
-    //pesan
-  }
-  void total() {
-    //rumus Jumlah Pembelian
-  }
+
   void disc() {
     if (_chosenValue == "Biasa") {
       b = 0;
@@ -85,81 +88,181 @@ class _HomeState extends State<Home> {
     });
   }
 
-  void harilib() {
-    z = int.parse(jumlah.text);
-    x = int.parse(disko);
-    if (_pil == Harilibur.ya) {
-      v = z - x - 2500;
-      v.toString();
-    } else {
-      v = z - x;
-      v.toString();
-    }
-    setState(() {
-      har = "$v";
-    });
-  }
-
-  int r = 0, t = 0;
-  void saudar() {
-    r = int.parse(har);
-    if (_pil2 == Saudara.ya) {
-      t = r - 5000;
-      t.toString();
-    } else if (_pil2 == Saudara.tidak) {
-      t = r + 3000;
-      t.toString();
-    }
-    setState(() {
-      saud = "$t";
-    });
-  }
-
-  int p = 0, o = 0;
-  void jeniss() {
-    if (value == true) {
-      p = p + 100;
-      p.toString();
-    } else if (value2 == true) {
-      p = p + 200;
-      p.toString();
-    } else if (value3 == true) {
-      p = p - 500;
-      p.toString();
-    } else if (value4 == true) {
-      p = p - 100;
-      p.toString();
-    } else {
-      p = p;
-      p.toString();
-    }
-    setState(() {
-      jens = "$p";
-    });
-  }
-
-  int l = 0;
+  double hd = 0;
   void ppn() {
-    c = int.parse(jumlah.text);
-    d = c * 10 / 100;
-    d.toString();
-    setState(() {
-      pajak = "$d";
-    });
+    a = int.parse(jumlah.text);
+    if (_chosenValue == "Biasa") {
+      b = 0;
+      b.toString();
+    } else if (_chosenValue == "Pelanggan") {
+      a = int.parse(jumlah.text);
+      b = (a / 100) * 2;
+      b.toString();
+    } else if (_chosenValue == "P.Istimewa") {
+      a = int.parse(jumlah.text);
+      b = (a * 4) / 100;
+      b.toString();
+    }
+    //harilibur
+    double c = 0;
+    if (_pil == Harilibur.ya) {
+      c = a - b - 2500;
+      c.toString();
+    } else {
+      c = a - b;
+      c.toString();
+    }
+    //saudara
+    double d = 0;
+    if (_pil2 == Saudara.ya) {
+      d = c - 5000;
+      d.toString();
+    } else if (_pil2 == Saudara.tidak) {
+      d = c + 3000;
+      d.toString();
+    }
+    //jenis
+    double e = 0, f = 0;
+    if (value == true) {
+      e = d + 100;
+      e.toString();
+    } else if (value2 == true) {
+      e = d + 200;
+      e.toString();
+    } else if (value3 == true) {
+      e = d - 500;
+      e.toString();
+    } else if (value4 == true) {
+      e = d - 100;
+      e.toString();
+    } else {
+      e = d;
+      e.toString();
+    }
+    f = e * 10 / 100;
+    ppnt.text = f.toString();
   }
 
   void grandtot() {
-    //grand total
+    a = int.parse(jumlah.text);
+    if (_chosenValue == "Biasa") {
+      b = 0;
+      b.toString();
+    } else if (_chosenValue == "Pelanggan") {
+      a = int.parse(jumlah.text);
+      b = (a / 100) * 2;
+      b.toString();
+    } else if (_chosenValue == "P.Istimewa") {
+      a = int.parse(jumlah.text);
+      b = (a * 4) / 100;
+      b.toString();
+    }
+    //harilibur
+    double c = 0;
+    if (_pil == Harilibur.ya) {
+      c = a - b - 2500;
+      c.toString();
+    } else {
+      c = a - b;
+      c.toString();
+    }
+    //saudara
+    double d = 0;
+    if (_pil2 == Saudara.ya) {
+      d = c - 5000;
+      d.toString();
+    } else if (_pil2 == Saudara.tidak) {
+      d = c + 3000;
+      d.toString();
+    }
+    //jenis
+    double e = 0, f = 0, h = 0;
+    if (value == true) {
+      e = d + 100;
+      e.toString();
+    } else if (value2 == true) {
+      e = d + 200;
+      e.toString();
+    } else if (value3 == true) {
+      e = d - 500;
+      e.toString();
+    } else if (value4 == true) {
+      e = d - 100;
+      e.toString();
+    } else {
+      e = d;
+      e.toString();
+    }
+    f = e * 10 / 100;
+    h = e + f;
+    grantott.text = h.toString();
   }
+
+  int l = 0, w = 0;
   void kembalian() {
-    //kembalian yang di dapatkan
+    a = int.parse(jumlah.text);
+    if (_chosenValue == "Biasa") {
+      b = 0;
+      b.toString();
+    } else if (_chosenValue == "Pelanggan") {
+      a = int.parse(jumlah.text);
+      b = (a / 100) * 2;
+      b.toString();
+    } else if (_chosenValue == "P.Istimewa") {
+      a = int.parse(jumlah.text);
+      b = (a * 4) / 100;
+      b.toString();
+    }
+    //harilibur
+    double c = 0;
+    if (_pil == Harilibur.ya) {
+      c = a - b - 2500;
+      c.toString();
+    } else {
+      c = a - b;
+      c.toString();
+    }
+    //saudara
+    double d = 0;
+    if (_pil2 == Saudara.ya) {
+      d = c - 5000;
+      d.toString();
+    } else if (_pil2 == Saudara.tidak) {
+      d = c + 3000;
+      d.toString();
+    }
+    //jenis
+    double e = 0, f = 0, h = 0, i = 0, j = 0;
+    if (value == true) {
+      e = d + 100;
+      e.toString();
+    } else if (value2 == true) {
+      e = d + 200;
+      e.toString();
+    } else if (value3 == true) {
+      e = d - 500;
+      e.toString();
+    } else if (value4 == true) {
+      e = d - 100;
+      e.toString();
+    } else {
+      e = d;
+      e.toString();
+    }
+    f = e * 10 / 100;
+    h = e + f;
+    i = double.parse(dibayar.text);
+    j = i - h;
+    kembaliant.text = j.toString();
   }
+
   void ressets() {
     setState(() {
       nota.text = "";
       nama.text = "";
       jumlah.text = "";
       disko = "";
+      ppnt.text = "";
       _chosenValue = "Biasa";
       _pil = Harilibur.tidak;
       _pil2 = Saudara.tidak;
@@ -167,6 +270,9 @@ class _HomeState extends State<Home> {
       value2 = false;
       value3 = false;
       value4 = false;
+      grantott.text = "";
+      dibayar.text = "";
+      kembaliant.text = "";
     });
   }
 
@@ -363,7 +469,6 @@ class _HomeState extends State<Home> {
               textAlign: TextAlign.center,
               onChanged: (text) {
                 disc();
-                ppn();
               },
               decoration: new InputDecoration(
                   border: OutlineInputBorder(), labelText: "", hintText: ""),
@@ -599,15 +704,22 @@ class _HomeState extends State<Home> {
             ),
           ),
           Container(
-            width: 155,
-            height: 23,
+            width: 150,
+            height: 30,
             decoration: BoxDecoration(
               border: Border.all(color: Colors.black),
               color: Colors.white,
             ),
-            child: Text(
-              pajak,
+            child: TextField(
+              showCursor: true,
               textAlign: TextAlign.center,
+              controller: ppnt,
+              decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  hintStyle: TextStyle(
+                    fontStyle: FontStyle.normal,
+                  )),
+              readOnly: true,
             ),
           ),
           Padding(padding: EdgeInsets.only(left: 8)),
@@ -628,15 +740,22 @@ class _HomeState extends State<Home> {
             ),
           ),
           Container(
-            width: 155,
-            height: 23,
+            width: 150,
+            height: 30,
             decoration: BoxDecoration(
               border: Border.all(color: Colors.black),
               color: Colors.white,
             ),
-            child: Text(
-              disko,
+            child: TextField(
+              showCursor: true,
               textAlign: TextAlign.center,
+              controller: grantott,
+              decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  hintStyle: TextStyle(
+                    fontStyle: FontStyle.normal,
+                  )),
+              readOnly: true,
             ),
           ),
           Padding(padding: EdgeInsets.only(left: 8)),
@@ -666,7 +785,7 @@ class _HomeState extends State<Home> {
               inputFormatters: <TextInputFormatter>[
                 FilteringTextInputFormatter.allow(RegExp(r'[0-9.]'))
               ],
-              controller: diskon,
+              controller: dibayar,
             ),
           ),
           Padding(padding: EdgeInsets.only(left: 8)),
@@ -687,15 +806,22 @@ class _HomeState extends State<Home> {
             ),
           ),
           Container(
-            width: 155,
-            height: 23,
+            width: 150,
+            height: 30,
             decoration: BoxDecoration(
               border: Border.all(color: Colors.black),
               color: Colors.white,
             ),
-            child: Text(
-              disko,
+            child: TextField(
+              showCursor: true,
               textAlign: TextAlign.center,
+              controller: kembaliant,
+              decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  hintStyle: TextStyle(
+                    fontStyle: FontStyle.normal,
+                  )),
+              readOnly: true,
             ),
           ),
           Padding(padding: EdgeInsets.only(left: 8)),
@@ -711,7 +837,9 @@ class _HomeState extends State<Home> {
             child: RaisedButton(
               child: Text("Proses"),
               onPressed: () {
-                //Fungsi
+                kembalian();
+                ppn();
+                grandtot();
               },
             ),
           ),
